@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "record_status": "historical_result_not_rerun_for_release",
+  "path_convention": "Historical source paths below identify the original workspace; the verified final checkpoint is bundled at checkpoints/massachusetts.pt.",
+  "result_source": {
+    "path": "kaggle_g8_mass_eval_output/g8_massachusetts_d4_8tta_native_eval.json",
+    "sha256": "4f43310168d17f8a5eeed1ff620a5fa5967fe4a655750791b7365479ef8354c6",
+    "normalization": "All numerical metrics and protocol values were preserved. The original hosted checkpoint path was replaced with repository-relative provenance; dataset, model and record status were added."
+  },
+  "checkpoint": {
+    "path": "checkpoints/massachusetts.pt",
+    "sha256": "17ec066b16226e11e12120eb30c076d74549dffe242807a1681fc6f54260f469",
+    "epoch": 240,
+    "weights": "ema",
+    "metadata_verification": "Inspected primitive metadata in the checkpoint ZIP data.pkl using pickletools without executing pickle or loading tensors; epoch and cfg agree with the result and archived YAML.",
+    "selection": "Maximum recorded pooled validation F1 at threshold 0.5 on deterministic 512-by-512 center crops; validation every 10 epochs. Historical history.json contains epochs 1 through 250 and its best recorded F1 is at epoch 240.",
+    "training_validation_metrics": {
+      "precision": 0.7820254992616658,
+      "recall": 0.7728376048166129,
+      "f1": 0.7774043557911279,
+      "iou": 0.6358639025616517
+    }
+  },
+  "training_config_source": "kaggle_g8_massachusetts_output/train.yaml",
+  "training_history_source": "kaggle_g8_massachusetts_output/runs/g8_roadweave_oriented_segformer_massachusetts_bcedice_250e/history.json",
+  "evaluation_launcher_source": "kaggle_push_g8_massachusetts_8tta_eval/g8_massachusetts_d4_8tta_native_eval.py",
+  "evaluation_source_snapshot": "kaggle_g8_massachusetts_output/src/roadx",
+  "evaluation_entrypoint": "roadx.distributed_native_eval",
+  "evaluation_entrypoint_sha256": "b5c891228317d6f9e43171dcf3f261411fba3005636160857ff8cab4050607b5",
+  "dataset_source_sha256": "6dda1006211f39ba066f8f0277fb36fe2861cb8d8d1cf76a07510ef58820f998",
+  "split": {
+    "name": "WeavingUnet Massachusetts subset",
+    "split_seed": 42,
+    "training_pool_images": 600,
+    "train_images": 540,
+    "validation_images": 60,
+    "test_images": 178,
+    "construction": "Pair sorted training/images paths with matching masks, shuffle with random.Random(42), use the first round(0.1*N) pairs for validation and the remainder for training. Test pairs come from the separate eval directory.",
+    "historical_data_layout": "WeavingUnet_dataset/datasetmassa/ROAD/{training,eval}/{images,masks}",
+    "scope_note": "This is the repository's 778-image Massachusetts subset. Do not describe these counts as the complete original Massachusetts benchmark split.",
+    "verification": "Historical evaluator reports 60 validation and 178 test images; the local source dataset contains 600 training images and 178 eval images. Individual historical file identities and dataset bytes were not recorded in the result JSON."
+  },
+  "verification_limits": [
+    "The reorganized release code was not used to produce these saved metrics during release preparation.",
+    "The historical result JSON does not contain a checkpoint digest; the digest above identifies the retained local checkpoint with matching epoch and configuration.",
+    "The downloaded evaluation log is empty; numerical results are supported by the retained result JSON.",
+    "Exact installed package versions, image-level predictions, raw confusion counts and historical split manifests were not retained in the evaluation result."
+  ]
+}

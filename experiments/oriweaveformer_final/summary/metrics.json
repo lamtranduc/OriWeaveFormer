@@ -1,0 +1,35 @@
+{
+  "record_status": "historical_result_not_rerun_for_release",
+  "model": "OriWeaveFormer",
+  "protocol": "Native-resolution 1024-window, 512-stride, tile-local D4 8TTA; threshold selected on validation pooled F1",
+  "metric_scale": "fractions in [0,1]",
+  "results": [
+    {
+      "dataset": "massachusetts",
+      "checkpoint_epoch": 240,
+      "threshold": 0.467,
+      "precision": 0.7843271912384235,
+      "recall": 0.775140760935304,
+      "f1": 0.779706868622754,
+      "iou": 0.6389505361612936,
+      "mean_image_f1": 0.7598078814902242,
+      "validation_images": 60,
+      "test_images": 178,
+      "detail": "../massachusetts/metrics.json"
+    },
+    {
+      "dataset": "deepglobe",
+      "checkpoint_epoch": 150,
+      "checkpoint_epoch_scope": "DeepGlobe 150-epoch training (512x512 crops)",
+      "threshold": 0.4458,
+      "precision": 0.8325474383474202,
+      "recall": 0.8395101595686301,
+      "f1": 0.8360142520041057,
+      "iou": 0.7182341702668947,
+      "mean_image_f1": 0.8270211455782258,
+      "validation_images": 600,
+      "test_images": 626,
+      "detail": "../deepglobe/metrics.json"
+    }
+  ]
+}

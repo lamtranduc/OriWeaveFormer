@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1480" height="890" viewBox="0 0 1480 890">
+<title>OriWeaveFormer orientation-conditioned decoder</title>
+<desc>Four projected scales feed a concatenation branch and an orientation-gated weighted sum. Both branches are concatenated and passed through the output head.</desc>
+<defs>
+<marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="#53677e"/></marker>
+<marker id="o" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="#c5791b"/></marker>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#16324f}.title{font-size:29px;font-weight:bold}.h{font-size:21px;font-weight:bold}.b{font-size:18px}.s{font-size:16px;fill:#4c6278}.w{fill:none;stroke:#53677e;stroke-width:2.5;marker-end:url(#a)}.f{fill:none;stroke:#c5791b;stroke-width:2.5;stroke-dasharray:8 6;marker-end:url(#o)}.p{fill:#f0ecfb;stroke:#aa94d0;stroke-width:1.5}.t{fill:#e8f6f2;stroke:#69b3a0;stroke-width:1.5}.g{fill:#fff3dc;stroke:#d6a24c;stroke-width:1.5}</style>
+</defs>
+<rect width="1480" height="890" fill="white"/>
+<text x="40" y="47" class="title">Inside the OriWeaveFormer decoder · two complementary fusion branches</text>
+<text x="40" y="81" class="b">All tensors below share spatial size H/4 × W/4. Default projected width D = 256.</text>
+
+<rect x="40" y="260" width="265" height="125" rx="14" class="p"/>
+<text x="172" y="297" text-anchor="middle" class="h">Projected features</text>
+<text x="172" y="330" text-anchor="middle" class="b">P1, P2, P3, P4</text>
+<text x="172" y="361" text-anchor="middle" class="b">256 channels each</text>
+<path d="M305 322 H370" class="w"/>
+<rect x="370" y="260" width="280" height="125" rx="14" class="p"/>
+<text x="510" y="297" text-anchor="middle" class="h">Channel concatenation</text>
+<text x="510" y="330" text-anchor="middle" class="b">J = [P4, P3, P2, P1]</text>
+<text x="510" y="361" text-anchor="middle" class="b">1024 channels</text>
+
+<rect x="370" y="120" width="280" height="85" rx="14" class="g"/>
+<text x="510" y="153" text-anchor="middle" class="h">Shared orientation field</text>
+<text x="510" y="184" text-anchor="middle" class="b">O = [p, q, confidence]</text>
+<path d="M650 163 H810 V215" class="f"/>
+<path d="M650 307 H710" class="w"/>
+<rect x="710" y="215" width="340" height="165" rx="14" class="g"/>
+<text x="880" y="250" text-anchor="middle" class="h">Adaptive scale gate</text>
+<text x="880" y="285" text-anchor="middle" class="b">Concat(J, O): 1027 channels</text>
+<text x="880" y="316" text-anchor="middle" class="b">1×1 Conv → GN → GELU → 1×1 Conv</text>
+<text x="880" y="352" text-anchor="middle" class="b">Softmax → w1, w2, w3, w4</text>
+<path d="M1050 300 H1110" class="w"/>
+<path d="M172 260 V105 H1400 V247 H1380" class="w"/>
+<text x="1055" y="130" class="s">P1, P2, P3, P4</text>
+<rect x="1110" y="215" width="270" height="165" rx="14" class="t"/>
+<text x="1245" y="254" text-anchor="middle" class="h">Weighted sum A</text>
+<text x="1245" y="291" text-anchor="middle" class="b">A = Σ wi Pi</text>
+<text x="1245" y="322" text-anchor="middle" class="b">Σ wi = 1 at each pixel</text>
+<text x="1245" y="353" text-anchor="middle" class="b">256 output channels</text>
+
+<path d="M510 385 V455" class="w"/>
+<rect x="370" y="455" width="280" height="135" rx="14" class="p"/>
+<text x="510" y="490" text-anchor="middle" class="h">Concatenation branch S</text>
+<text x="510" y="525" text-anchor="middle" class="b">1×1 Conv → GN → GELU</text>
+<text x="510" y="562" text-anchor="middle" class="b">1024 → 256 channels</text>
+<path d="M650 523 H760" class="w"/>
+<path d="M1245 380 V523 H1080" class="w"/>
+<rect x="760" y="455" width="320" height="135" rx="14" class="t"/>
+<text x="920" y="493" text-anchor="middle" class="h">Merge both branches</text>
+<text x="920" y="531" text-anchor="middle" class="b">Concat(S, A)</text>
+<text x="920" y="562" text-anchor="middle" class="b">512 channels</text>
+<path d="M920 590 V642" class="w"/>
+<rect x="660" y="645" width="520" height="125" rx="14" class="t"/>
+<text x="920" y="680" text-anchor="middle" class="h">Output fusion and classifier</text>
+<text x="920" y="715" text-anchor="middle" class="b">3×3 Conv: 512 → 256 · GN · GELU · Dropout</text>
+<text x="920" y="747" text-anchor="middle" class="b">1×1 Conv: 256 → 1 · then resize to H × W</text>
+
+<rect x="40" y="655" width="545" height="115" rx="12" fill="#f6f8fb"/>
+<text x="60" y="686" class="b">The gate learns a different scale mixture at each pixel.</text>
+<text x="60" y="718" class="b">Gradients can reach p and q through this gate.</text>
+<text x="60" y="749" class="s">OCFE grid construction uses detached p and q instead.</text>
+<text x="40" y="823" class="s">Code order: J concatenates coarse → fine; adaptive weighting enumerates P1 → P4. The gate learns the four output weights.</text>
+<text x="40" y="855" class="s">This is the implemented OriWeaveFormer decoder, not an unmodified SegFormer decoder.</text>
+</svg>

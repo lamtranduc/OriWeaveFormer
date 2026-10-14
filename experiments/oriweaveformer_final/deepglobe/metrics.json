@@ -1,0 +1,38 @@
+{
+  "dataset": "deepglobe",
+  "model": "OriWeaveFormer",
+  "record_status": "historical_result_not_rerun_for_release",
+  "checkpoint_epoch": 150,
+  "checkpoint_epoch_scope": "DeepGlobe 150-epoch training (512x512 crops)",
+  "window": 1024,
+  "stride": 512,
+  "tta": "D4 8-way (tile-local)",
+  "gpus": 2,
+  "validation_images": 600,
+  "test_images": 626,
+  "selected_threshold": 0.4458,
+  "validation_metrics": {
+    "precision": 0.8300940927767666,
+    "recall": 0.8303228636766518,
+    "f1": 0.8302084124667787,
+    "iou": 0.7097063329911442
+  },
+  "test_metrics": {
+    "fixed_0.5": {
+      "precision": 0.84163870727897,
+      "recall": 0.8302300662976613,
+      "f1": 0.8358954111611065,
+      "iou": 0.7180587595602426,
+      "mean_image_f1": 0.8268958427664925,
+      "threshold": 0.5
+    },
+    "val_tuned": {
+      "precision": 0.8325474383474202,
+      "recall": 0.8395101595686301,
+      "f1": 0.8360142520041057,
+      "iou": 0.7182341702668947,
+      "mean_image_f1": 0.8270211455782258,
+      "threshold": 0.4458
+    }
+  }
+}

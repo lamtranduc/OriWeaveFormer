@@ -1,0 +1,49 @@
+{
+  "protocol_status": "Derived from archived evaluator source and final result JSON files; not reexecuted for release",
+  "weights": "Checkpoint EMA with strict model.load_state_dict after removing a leading module. prefix",
+  "image_scale": "Native image resolution; no full-image resizing during final evaluation",
+  "input": {
+    "color": "OpenCV BGR converted to RGB",
+    "scale_divisor": 255.0,
+    "mean": [0.485, 0.456, 0.406],
+    "std": [0.229, 0.224, 0.225],
+    "padding": "Reflect-pad bottom and right to multiples of stride 512, then crop predictions back to the original image extent"
+  },
+  "inference": {
+    "window": 1024,
+    "stride": 512,
+    "tta": "Tile-local D4: rotations by 0, 90, 180, 270 degrees, each with and without horizontal reflection; invert each transform on its prediction",
+    "probability": "Sigmoid on model logits",
+    "precision": "torch.autocast(cuda, torch.bfloat16) in the archived inference implementation; probabilities cast to float32 for accumulation",
+    "merge": "Equal-weight arithmetic average of probabilities across all overlapping tiles and all eight transforms",
+    "gpus": 2,
+    "distribution": "Disjoint strided image subsets per GPU, with summed validation histograms and test counts reduced across ranks"
+  },
+  "ground_truth": {
+    "mask_conversion": "Read unchanged, convert RGB masks to grayscale when needed, then road = raw > 127",
+    "alignment": "Crop prediction and mask to their common minimum height and width from the top-left corner"
+  },
+  "threshold_selection": {
+    "data": "Validation split only",
+    "objective": "Maximum pooled pixel-level F1",
+    "bins_over_0_to_1": 10001,
+    "bin_index": "clip(int32(probability * 10000), 0, 10000)",
+    "minimum_threshold": 0.25,
+    "maximum_threshold": 0.75,
+    "step": 0.0001,
+    "endpoints_included": true,
+    "tie_break": "First maximum returned by numpy.argmax, selecting the lowest tied threshold",
+    "test_application": "Freeze the selected validation threshold; predict road where probability >= threshold",
+    "also_reported": "Fixed threshold 0.5 using the same checkpoint and predictions"
+  },
+  "metrics": {
+    "primary_aggregation": "Sum TP, FP and FN across all pixels of all test images before calculating precision, recall, F1 and IoU (pooled/micro)",
+    "epsilon": 0.0000001,
+    "precision": "TP / (TP + FP + epsilon)",
+    "recall": "TP / (TP + FN + epsilon)",
+    "f1": "2 * precision * recall / (precision + recall + epsilon)",
+    "iou": "TP / (TP + FP + FN + epsilon)",
+    "mean_image_f1": "Arithmetic mean of separately calculated per-image F1; this is an additional metric, not the pooled F1"
+  },
+  "training_validation_distinction": "Checkpoint selection uses deterministic center crops at the training crop size with threshold 0.5. The validation metrics in final metrics.json instead use native-image sliding windows, D4 TTA and validation threshold tuning."
+}

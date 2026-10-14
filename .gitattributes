@@ -1,0 +1,2 @@
+# Both checkpoints exceed GitHub's normal 100 MB object limit.
+checkpoints/*.pt filter=lfs diff=lfs merge=lfs -text

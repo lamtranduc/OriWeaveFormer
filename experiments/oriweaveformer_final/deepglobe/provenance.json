@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "record_status": "historical_result_not_rerun_for_release",
+  "path_convention": "Historical source paths below identify the original workspace; the verified final checkpoint is bundled at checkpoints/deepglobe.pt.",
+  "result_source": {
+    "path": "runs/oriweaveformer_final/deepglobe/eval.json",
+    "sha256": "7d0e28543fe551485e3e69d27a2926fb1f7b1d813f7cc76eb81ac6a81a9f4c40",
+    "normalization": "All numerical metrics and protocol values were preserved. The original hosted checkpoint path was replaced with repository-relative provenance; dataset, model, record status and epoch scope were added."
+  },
+  "checkpoint": {
+    "path": "checkpoints/deepglobe.pt",
+    "sha256": "d1398faa4b3a8124528f56b34a13d53fb3a30fc8b475d5f4fdcb1f40ea27a090",
+    "epoch": 150,
+    "weights": "ema",
+    "metadata_verification": "Inspected primitive metadata in the checkpoint ZIP data.pkl using pickletools without executing pickle or loading tensors; epoch and cfg agree with the result and training YAML.",
+    "selection": "Validation pooled F1 on 512-by-512 crops; validation every 10 epochs. 150 epochs total.",
+    "training_validation_metrics": {
+      "precision": 0.8309790818012117,
+      "recall": 0.8168426788121005,
+      "f1": 0.823850193324517,
+      "iou": 0.7004637280604138
+    }
+  },
+  "training_config_source": "configs/experiments/oriweaveformer_deepglobe.yaml",
+  "evaluation_entrypoint": "roadx.distributed_native_eval",
+  "evaluation_entrypoint_sha256": "b5c891228317d6f9e43171dcf3f261411fba3005636160857ff8cab4050607b5",
+  "dataset_source_sha256": "6dda1006211f39ba066f8f0277fb36fe2861cb8d8d1cf76a07510ef58820f998",
+  "split": {
+    "name": "Custom deterministic holdout of publicly labelled DeepGlobe training pairs",
+    "split_seed": 42,
+    "labelled_pool_images": 6226,
+    "train_images": 5000,
+    "validation_images": 600,
+    "test_images": 626,
+    "construction": "Sort labelled train/*_sat.jpg with matching *_mask.png, shuffle with random.Random(42), take indices [0:5000] for training, [5000:5600] for validation and [5600:] for testing.",
+    "official_benchmark_test": false,
+    "verification": "Historical dataset implementation defines these slices and the saved evaluation reports 600 validation and 626 test images."
+  },
+  "verification_limits": [
+    "The reorganized release code was not used to produce these saved metrics during release preparation.",
+    "The historical result JSON does not contain a checkpoint digest; the digest above identifies the retained local checkpoint with matching epoch and configuration.",
+    "The downloaded evaluation log is empty; numerical results are supported by the retained result JSON.",
+    "Exact installed package versions, image-level predictions, raw confusion counts and historical split manifests were not retained in the evaluation result."
+  ]
+}

@@ -1,0 +1,6 @@
+encoder: mit_b3
+pretrained: imagenet
+spans: [4, 3, 8]
+decoder_dim: 256
+decoder_dropout: 0.1
+ocfe_initial_scale: 0.1

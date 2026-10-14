@@ -1,0 +1,6 @@
+dataset: massachusetts
+data_root: data/massachusetts/raw
+split_seed: 42
+val_fraction: 0.1
+road_crop_probability: 0.7
+min_road_fraction: 0.01
